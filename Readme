@@ -1,0 +1,14 @@
+NotHards client to search multi and single agent levels!
+
+Compilation is done by running 'make' in this directory. The binary, called searcher, is created in the folder bin.
+Compilation tested on Arch linux and ubuntu.
+
+The client takes one input; the amount of memory in MB. We recommend running at 1500. Running it on the competition server would then be e.g:
+java -jar cserver.jar -d competition_levels/ -c "bin/searcher 1500"
+
+There is also a binary supplied already, which is created using Arch Linux, and meant for this platform. We recommend recompiling (make clean -> make) for the platform of desire.
+
+The script benchmarking.py is only for optional, handy use. It takes a log-folder from e.g. the cserver, e.g. output.out, and prints the solved levels with time and action, as well as the unsolved levels.
+
+
+The levels supplied in the levels-folder are levels from the report.
