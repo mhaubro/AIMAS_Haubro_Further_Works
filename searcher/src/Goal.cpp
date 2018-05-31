@@ -1,9 +1,18 @@
+/*
+ * Goal.cpp
+ *
+ *  Created on: 31 May 2018
+ *      Author: martin
+ */
+
 #include "Goal.h"
 
-Goal::Goal(char chr, Location location, int region, int id) :
-Entity(chr, location, Entity::BLUE, region, id)
-{
-    this->goalState = false;
+Goal::Goal() {
+	// TODO Auto-generated constructor stub
 
-    this->predecessors = std::vector<Goal *>();
 }
+
+Goal::~Goal() {
+	// TODO Auto-generated destructor stub
+}
+

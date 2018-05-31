@@ -1,20 +1,17 @@
-#ifndef GOAL_H
-#define GOAL_H
+/*
+ * Goal.h
+ *
+ *  Created on: 31 May 2018
+ *      Author: martin
+ */
 
-#include <utility>
-#include "Box.h"
-#include "Agent.h"
-#include <unordered_set>
+#ifndef SEARCHER_SRC_GOAL_H_
+#define SEARCHER_SRC_GOAL_H_
 
-
-class Goal : public Entity {
+class Goal {
 public:
-
-    bool goalState;
-
-    std::vector<Goal *> predecessors;
-
-    Goal(char chr, Location location, int region, int id);
-    Goal(char chr, Location location, Box * box, int region, int id);
+	Goal();
+	virtual ~Goal();
 };
-#endif
+
+#endif /* SEARCHER_SRC_GOAL_H_ */

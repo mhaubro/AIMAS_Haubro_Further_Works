@@ -1,5 +1,5 @@
 #include "Initializer.h"
-#include "Node.h"
+#include "Location.h"
 #include <string>
 #include <sstream>
 #include <list>
@@ -17,39 +17,6 @@ using std::string;
 using std::stringstream;
 using std::pair;
 using std::vector;
-
-/*
-class Location{
-public:
-
-  int x;
-  int y;
-
-  Location():
-  x(0), y(0)
-  {
-  }
-
-  Location(const int _x, const int _y):
-  x(_x), y(_y)
-  {
-  }
-
-  Location(const Location& location):
-  x(location.x), y(location.y)
-  {
-  }
-
-  //Location& operator=(const Location& b){
-  //  return Location(b);
-  //}
-
-  Location operator+(const Location &b){
-    return Location(this->x+b.x, this->y+b.y);
-  }
-
-};
-*/
 
 namespace Initializer {
 

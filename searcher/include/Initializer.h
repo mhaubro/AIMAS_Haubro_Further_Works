@@ -1,11 +1,19 @@
+
+#ifndef INITIALIZER_H
+#define INITIALIZER_H
+
 #include <list>
 #include <string>
-#include "Node.h"
+#include "StateRepresentation.h"
 #include <vector>
 
 namespace Initializer{
 
   std::list<std::string> readInput();
-  Node * storeInput();
-  Node * setupEnvironment();
+  StateRepresentation * storeInput();
+  StateRepresentation * setupWorld();
 }
+
+
+
+#endif

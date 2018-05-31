@@ -6,9 +6,7 @@
 #include <iostream>
 #include <iterator>
 #include "Command.h"
-#include "MasterSearcher.h"
 #include "Initializer.h"
-#include "ManualNodePool.h"
 
 using std::stringstream;
 using std::istream;
@@ -18,38 +16,131 @@ using std::getline;
 using std::pair;
 using std::list;
 
-Client::Client()
-{
-   initialState = Initializer::setupEnvironment();
-	/*
-	 * This is a constructor that reads input from std::cin, from the server about the map
-	 * This should not be necessary to edit, and if need be, most likely only in main method
-	 * Where input parameters are read and might be added.
-	 */
+void printStep(std::string s){
+	std::stringstream ss;
 
+	std::cout << s;
+	std::cout << "\n";
+	std::string response;
+	std::getline(std::cin, response);
+
+	if (response.find(std::string("false")) != std::string::npos) {
+		ss << "Server responsed with "<< response <<"%s to the inapplicable action: "<< s <<"\n";
+		ss.str("");
+		ss << s << " was attempted in a state\n";
+		throw ("Command Error, printing step\n");
+	}
 }
 
-//As we never expect to have more than 1, this is not implemented.
-Client::~Client()
-{
+void search(){
+/*
+	//Yes yes it's ugly but it's needed.
+	Entity::maxX = Node::maxX;
+	Entity::maxY = Node::maxY;
+	Location::maxX = Node::maxX;
+	Location::maxY = Node::maxY;
+	Node::hashGoals();
+
+	//std::cerr << "Starts GetPlan\n";
+	int agents = initialState->agents.size();
+
+	//Get number of regions
+	int regions = 0;
+	for (int i = 0; i < agents; i++){
+		int reg = initialState->agents[i].getRegion();
+		if (reg > regions)
+			regions = reg;
+	}
+	regions++;
+
+	//Init centralPlanners
+	std::vector<CentralPlanner> planners = std::vector<CentralPlanner>();
+	//std::cerr << "Pre preanalysis\n";
+	for (int i = 0; i < regions; i++){
+		//Create a planner with a region
+		planners.push_back(CentralPlanner(i));
+		initialState->doHash();
+		planners[i].preAnalyse(initialState);
+		//////std::cerr << "CentralPlanner created\n";
+	}
+	//std::cerr << "Post preanalysis\n";
+
+	//Give each agent a pointer to its planner
+	for (int i = 0; i < agents; i++){
+		Agent * agent = &initialState->agents[i];
+		agent->setMyPlanner(&planners[agent->getRegion()]);
+	}
+
+	//Lazy hack to ensure that centralPlanners are completely decoupled
+	std::vector<Node> states = std::vector<Node>(regions);
+	std::vector<Node> tempstates = std::vector<Node>(regions);
+	for (int i = 0; i < regions; i++){
+		Node state = *initialState;
+		state.clearOtherRegions(i);
+		state.doHash();
+		Node tempstate = state;
+
+		states[i] = state;
+		tempstates[i] = tempstate;
+
+	}
+
+	//Giving each centralplanner their node
+	for (int i = 0; i < regions; i++){
+		planners[i].node = &tempstates[i];
+	}
+
+	//Making a vector of agent pointers to getactions from.
+	std::vector<Agent *> agentptrs = std::vector<Agent *> (agents);
+	for (int j = 0; j < regions; j++){
+		Node * state = &tempstates[j];
+		for (int k = 0; k < state->agents.size(); k++){
+			int num = state->agents[k].number;
+			agentptrs[num] = &state->agents[k];
+		}
+	}
+
+	while (true)
+	{
+		std::string s = "[";
+		for (int i = 0; i < agents; i++)
+		{
+			int region = agentptrs[i]->getRegion();
+			//s += "NoOp";
+			s += (agentptrs[i]->getAction(&states[region], &tempstates[region])->toString());
+			if (i == agents-1)
+				s += ']';
+			else
+				s += ", ";
+		}
+
+		bool isGoal= false;
+
+		for (int i = 0; i < regions; i++){
+			states[i] = tempstates[i];
+			states[i].doHash();
+			isGoal &= states[i].isGoalState();
+		}
+		printStep(s);
+
+		if (isGoal)
+			return;
+	}
+	*/
 }
+
+
+
+
+
+
 
 int main(int argc, char * argv[]){
-	/*
-	argv[1] contains memory limit in MB. This is the FIRST input, as argv[0] is program name
-	argv[2] contains how often the print should happen. This is optional, default is 1000
-	*/
-	pool.setup(atoi(argv[1]));
 
-	int printfreq = 1000;
-	char buffer[200];
+	Initializer::setupWorld();
+	//Search
+	search();
 
-	Client client = Client();
-
-	//StrategyBFS strategy = StrategyBFS();
-
-	std::vector<std::string> solution;
-
-	MasterSearcher::getPlan(client.initialState);
 	return 0;
 }
+
