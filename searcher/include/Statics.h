@@ -8,32 +8,44 @@
 #ifndef SEARCHER_SRC_STATICS_H_
 #define SEARCHER_SRC_STATICS_H_
 
-#include "StateRepresentation.h";
+#include "StateRepresentation.h"
 #include "Base.h"
 #include "Goal.h"
 #include "Actor.h"
 #include <vector>
 
+using std::vector;
+
 class Statics {
 public:
+
 	Statics();
+	Statics(unordered_map<Location, Goal, LocationHash> goals, vector<Base> bases, vector<bool> walls, int maxX, int maxY, StateRepresentation startstate);
 	virtual ~Statics();
 
-	static const int maxX;
-	static const int maxY;
+	StateRepresentation runningState;
+	StateRepresentation fixedState;
+	const int maxX;
+	const int maxY;
 
-	static StateRepresentation runningState;
-	static StateRepresentation fixedState;
+	vector<Actor> actors;
+	unordered_map<Location, Goal, LocationHash> goals;
 
-	static const std::vector<Actor> actors;
-	static const std::vector<Goal> goals;
+	const vector<Base> bases;
+	const vector<bool> walls;
+	const vector<int> allPairsShortestPath;
 
-	static const std::vector<Base> bases;
+private:
 
-	static const std::vector<int> allPairsShortestPath;
-
-
+	vector<Actor> computeActors();
+	vector<int> computeAllPairsShortestPath();
 
 };
+
+
+
+extern Statics * statics;
+
+
 
 #endif /* SEARCHER_SRC_STATICS_H_ */

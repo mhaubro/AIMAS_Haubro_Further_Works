@@ -8,9 +8,11 @@
 #ifndef SEARCHER_SRC_ACTOR_H_
 #define SEARCHER_SRC_ACTOR_H_
 
-class Actor {
+#include "Agent.h"
+
+class Actor : public Agent {
 public:
-	Actor();
+	Actor(Agent & agent);
 	virtual ~Actor();
 };
 

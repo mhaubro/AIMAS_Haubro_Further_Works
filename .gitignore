@@ -34,3 +34,7 @@
 \.cproject
 
 \.settings/
+
+\.gdb_history
+
+bin/

@@ -5,7 +5,7 @@
 #
 
 CPP = g++
-CPP_FLAGS = -std=c++14 -g -O3#Using -O3 to aggressively optimize. Use -g to use with gdb
+CPP_FLAGS = -std=c++14 -g -O0#Using -O3 to aggressively optimize. Use -g to use with gdb
 #gdb requires hacks for now.
 
 .PHONY: all clean allclean alltools

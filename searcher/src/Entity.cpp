@@ -1,34 +1,29 @@
-#include <Base.h>
-#include <iostream>
-#include <string>
-#include "CentralPlanner.h"
+/*
+ * Entity.cpp
+ *
+ *  Created on: 1 Jun 2018
+ *      Author: martin
+ */
 
-Entity::Entity(char chr, Location location, COLOR color, int region, int id) :
-chr(chr), location(location), color(color), region(region), id(id) {
+#include "Entity.h"
+
+Entity::Entity(Base & base, Location location) :
+base(base), location(location)
+{
 
 }
 
-int Entity::maxX;
-int Entity::maxY;
-
-
-Entity::COLOR Entity::getColor() const{
-	return color;
-}
-char Entity::getChar() const{
-	return chr;
+Entity::~Entity() {
+	// TODO Auto-generated destructor stub
 }
 
-int Entity::getRegion() const{
-	return region;
-}
-
-int Entity::getID() const {
-	return id;
+Base & Entity::getBase(){
+	return base;
 }
 
 double Entity::getDistance(Entity e) const{
-	return CentralPlanner::allPairsShortestPaths[location.getIndex()+e.getLocation().getIndex()*maxX*maxY];
+	return 0;
+	//return CentralPlanner::allPairsShortestPaths[location.getIndex()+e.getLocation().getIndex()*maxX*maxY];
 }
 
 int Entity::getManhattan(Entity e) const{
@@ -46,3 +41,8 @@ Location Entity::getLocation() const
 {
 	return location;
 }
+
+char Entity::getChar(){
+	return getBase().getChar();
+}
+

@@ -1,3 +1,5 @@
+
+
 #ifndef ENTITY_H
 #define ENTITY_H
 #include <utility>
@@ -13,18 +15,18 @@ class Base {
 public:
 	enum COLOR : short {BLUE, RED, GREEN, CYAN, MAGENTA, ORANGE, PINK, YELLOW, NUMCOLS};
 
-	Base(char chr, Location location, COLOR color, int region, int id);
-	Base::COLOR getColor() const;
+	Base(char chr, COLOR color, int region, int id);
+	COLOR getColor() const;
 	char getChar() const;
 	int getRegion() const;
 	int getID() const;
 
-protected:
+private:
+	//Should not be edited.
 	char chr;
 	COLOR color;
 	int region;
 	int id;
-
 };
 
 

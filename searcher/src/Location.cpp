@@ -8,7 +8,6 @@
 #include "Location.h"
 #include <cmath>
 #include <sstream>
-#include "CentralPlanner.h"
 
 Location::Location(){
 	this->x = -3;
@@ -38,7 +37,8 @@ int Location::getIndex() const{
 
 
 double Location::getDistance(Location otherLoc) const{
-	return CentralPlanner::allPairsShortestPaths[otherLoc.getIndex()+getIndex()*maxX*maxY];
+	return 0;
+	//return CentralPlanner::allPairsShortestPaths[otherLoc.getIndex()+getIndex()*maxX*maxY];
 }
 
 int Location::getManhattan(Location otherLoc) const{

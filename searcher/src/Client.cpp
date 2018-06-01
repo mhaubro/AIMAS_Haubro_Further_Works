@@ -7,6 +7,7 @@
 #include <iterator>
 #include "Command.h"
 #include "Initializer.h"
+#include "Statics.h"
 
 using std::stringstream;
 using std::istream;
@@ -138,6 +139,8 @@ void search(){
 int main(int argc, char * argv[]){
 
 	Initializer::setupWorld();
+
+	std::cout << statics->fixedState.toString();
 	//Search
 	search();
 

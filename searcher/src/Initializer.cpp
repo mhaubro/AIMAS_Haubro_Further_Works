@@ -1,5 +1,10 @@
 #include "Initializer.h"
 #include "Location.h"
+#include "Base.h"
+#include "Agent.h"
+#include "Goal.h"
+#include "Box.h"
+#include "Statics.h"
 #include <string>
 #include <sstream>
 #include <list>
@@ -17,6 +22,7 @@ using std::string;
 using std::stringstream;
 using std::pair;
 using std::vector;
+using std::unordered_map;
 
 namespace Initializer {
 
@@ -272,25 +278,25 @@ namespace Initializer {
     return out;
   }
 
-  Entity::COLOR parse_color(const string color){
+  Base::COLOR parse_color(const string color){
     if (color == (std::string("blue"))){
-      return Entity::BLUE;
+      return Base::BLUE;
     } else if (color == (std::string("red"))){
-      return Entity::RED;
+      return Base::RED;
     } else if (color == (std::string("green"))){
-      return Entity::GREEN;
+      return Base::GREEN;
     } else if (color == (std::string("cyan"))){
-      return Entity::CYAN;
+      return Base::CYAN;
     } else if (color == (std::string("magenta"))){
-      return Entity::MAGENTA;
+      return Base::MAGENTA;
     } else if (color == (std::string("orange"))){
-      return Entity::ORANGE;
+      return Base::ORANGE;
     } else if (color == (std::string("pink"))){
-      return Entity::PINK;
+      return Base::PINK;
     } else if (color == (std::string("yellow"))){
-      return Entity::YELLOW;
+      return Base::YELLOW;
     }
-    return Entity::BLUE;
+    return Base::BLUE;
   }
 
 
@@ -311,7 +317,7 @@ namespace Initializer {
     return map;
   }
 
-  Node* parse_regions(const vector<vector<string>> regions, std::map<char, string> color_map){
+  StateRepresentation parse_regions(const vector<vector<string>> regions, std::map<char, string> color_map){
 
     int width = 0;
     int height = 0;
@@ -324,13 +330,11 @@ namespace Initializer {
         height = region.size();
     }
 
-    Node::maxX = width;
-    Node::maxY = height;
-
-    Node::walls.resize(width*height, false);
-
-    vector<Agent> agents;
-    vector<Box> boxes;
+    unordered_map<Location, Box, LocationHash> boxes;
+    unordered_map<Location, Agent, LocationHash> agents;
+    vector<bool> walls = vector<bool>(width*height);
+    unordered_map<Location, Goal, LocationHash> goals;
+    vector<Base> bases;
 
     int id_counter = 0;
     for (int r = 0; r < regions.size(); r++){
@@ -340,28 +344,29 @@ namespace Initializer {
         for (int x = 0; x < line.size(); x++){
           char c = line[x];
           if (isWall(c)){
-            Node::walls[x + y * width] = true;
+            walls[x + y * width] = true;
           }else if (isAgent(c)){
-            agents.emplace_back(c, Location(x, y), parse_color(color_map[c]),r, id_counter++);
+        	bases.emplace_back(c, parse_color(color_map[c]), r, id_counter);
+            agents.insert(pair<Location, Agent>(Location(x,y), Agent(bases[bases.size()], Location(x, y))));
           } else if (isBox(c)){
-            boxes.emplace_back(c, Location(x, y), parse_color(color_map[c]),r, id_counter++);
+          	bases.emplace_back(c, parse_color(color_map[c]), r, id_counter);
+            boxes.insert(pair<Location, Box>(Location(x,y), Box(bases[bases.size()], Location(x, y))));
           } else if (isGoal(c)){
-            Node::goals.emplace_back(c, Location(x, y),r, id_counter++);
+          	bases.emplace_back(c, parse_color(color_map[c]), r, id_counter);
+            goals.insert(pair<Location, Goal>(Location(x,y), Goal(bases[bases.size()], Location(x, y))));
           }
         }
       }
     }
 
-    std::sort (agents.begin(), agents.end(), [](Agent& x, Agent& y)->bool{return x.getChar() < y.getChar();});
+    StateRepresentation initialstate(boxes, agents);
 
-    Node * initialState = new Node();
-    initialState->boxes = boxes;
-    initialState->agents = agents;
+    statics = new Statics(goals, bases, walls, width, height, initialstate);
 
-    return initialState;
+    return initialstate;
   }
 
-  Node* read_level_string(const vector<string> lines){
+  StateRepresentation read_level_string(const vector<string> lines){
 
     vector<string> info_strings;
     int i = 0;
@@ -390,7 +395,7 @@ namespace Initializer {
     return parse_regions(regions, color_map);
   }
 
-  Node* setupEnvironment(){
+  StateRepresentation setupWorld(){
 
     vector<string> lines;
 

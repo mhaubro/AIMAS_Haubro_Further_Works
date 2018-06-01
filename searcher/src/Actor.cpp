@@ -7,8 +7,7 @@
 
 #include "Actor.h"
 
-Actor::Actor() {
-	// TODO Auto-generated constructor stub
+Actor::Actor(Agent & agent) : Agent(agent){
 
 }
 

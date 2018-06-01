@@ -7,7 +7,7 @@
 
 #include "Goal.h"
 
-Goal::Goal() {
+Goal::Goal(Base & base, Location location) : Entity(base, location) {
 	// TODO Auto-generated constructor stub
 
 }

@@ -8,9 +8,14 @@
 #ifndef SEARCHER_SRC_GOAL_H_
 #define SEARCHER_SRC_GOAL_H_
 
-class Goal {
+#include "Base.h"
+#include "Entity.h"
+
+class Base;
+
+class Goal : public Entity {
 public:
-	Goal();
+	Goal(Base & base, Location location);
 	virtual ~Goal();
 };
 

@@ -10,8 +10,8 @@
 namespace Initializer{
 
   std::list<std::string> readInput();
-  StateRepresentation * storeInput();
-  StateRepresentation * setupWorld();
+  StateRepresentation storeInput();
+  StateRepresentation setupWorld();
 }
 
 
